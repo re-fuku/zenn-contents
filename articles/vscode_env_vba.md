@@ -6,4 +6,88 @@ topics: ["VSCode", "VBA"]
 published: false
 ---
 
-![aaaa](/images/vscode_env_vba/test.png)
+## はじめに
+VBAでの開発を行う際にブラウザで生成AIを利用しながら作業を行うことが多く
+さらに開発スピードを向上やコード管理を容易にするためにVSCodeを利用した開発環境を整える。
+開発環境の構築や設定方法等を忘れがちであるため備忘録として残します。
+
+### やりたいこと
+- エディタ内で開発を行えるようにしAIへコードのコピペ作業を無くしたい
+- コードの修正内容や変更状態を管理するためGitを利用したい
+
+### インストールした拡張機能
+1. VBA(発行元 : serkonda7)
+- 用途 : コードをハイライトし見やすくする
+![VSCode拡張機能VBA](/images/vscode_env_vba/VSCode-VBA.png)
+2. XVBA - Live Server VBA(発行元 : Local Smart)
+- 用途 : Excel⇔VSCodeの連携を行う
+- npmコマンドを使用するため事前にnode.jsのインストールが必要
+![VSCode拡張機能XVBA](/images/vscode_env_vba/VSCode-XVBA.png)
+
+### 初期設定
+#### VSCode
+1. フォルダをExcel VBAのプロジェクトフォルダにする
+- 設定ファイルの作成
+- 各ファイルを保存するフォルダを作成
+![プロジェクトフォルダの作成](/images/vscode_env_vba/XVBA-BootStrap.gif)
+2. config.jsonの設定
+- どのExcelと紐づけるか設定する
+```json
+    {
+    "app_name": "XVBA",
+    "description": "",
+    "author": "",
+    "email": "",
+    "create_ate": "Mon Mar 09 2026 11:50:45 GMT+0900 (GMT+09:00)",
+    "excel_file": "test.xlsm", // 紐づけたいExcelのファイル名
+    "vba_folder": "vba-files",
+    "ribbon_file": "customUI14",
+    "ribbon_folder": "ribbons",
+    "logs": "on",
+    "xvba_packages": {},
+    "xvba_dev_packages": {}
+}
+```
+3. プロジェクトフォルダにて`npm install`を行いpackage.jsonから必要なパッケージをインストールする
+詳しくはつまずいた所を参照
+4. Import-VBAを行いxlsmファイルのモジュールなどのデータをvba-filesに保存する
+![XVBA-Import](/images/vscode_env_vba/XVBA-Import.png)
+
+:::center
+⇓
+:::
+
+![vba-files](/images/vscode_env_vba/XVBA-vba-files.png)
+
+
+### つまずいた所
+1. プロジェクトフォルダを作成した後、xlsmファイルのモジュールなどがVSCodeで確認できなかった。
+　リアル2時間くらい沼った....
+- 原因
+- メッセージRun 'npm i @localsmart/xvba-cli' for install xvba-cli !
+- npm installが必要であり、さらにコメントアウト箇所でエラーが発生
+```diff json
+{
+    "name": "xvba-app",
+    "version": "1.0.0",
+    "description": "A XVBA App",
+    "main": "index.js",
+    "author": "LocalSmart",
+    "license": "ISC",
+-    "dependencies": {
+-        "excel-types": "1.0.0",
+-        "Xlog": "1.0.0"
+-    },
+    "devDependencies": {
+        "@localsmart/xvba-cli": "^1.0.2"
+    }
+}
+```
+- 上記コメント部分を削除することで`npm install`が正常にできモジュールなどを取得できた。
+
+2. モジュールなどを編集後にエクスポートが出来なかった。
+- 動作環境によっては可能化もしれないが対象のExcelファイルを開いてエクスポートを実行することで解決できた。
+
+### 反省点
+1. 環境構築で生成AIを使って原因の特定を行っているがnpmなど自身の環境の状態は伝えることが出来ていなかったため、
+　原因の特定と推測を自身で行い、推測した内容をAIで確認する方が効率よく解決できると感じた。
