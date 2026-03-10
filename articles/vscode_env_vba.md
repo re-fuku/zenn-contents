@@ -32,7 +32,7 @@ VBAでの開発を行う際にブラウザで生成AIを利用しながら作業
 ![プロジェクトフォルダの作成](/images/vscode_env_vba/XVBA-BootStrap.gif)
 2. config.jsonの設定
 - どのExcelと紐づけるか設定する
-```json
+```json:config.json
     {
     "app_name": "XVBA",
     "description": "",
@@ -52,21 +52,19 @@ VBAでの開発を行う際にブラウザで生成AIを利用しながら作業
 詳しくはつまずいた所を参照
 4. Import-VBAを行いxlsmファイルのモジュールなどのデータをvba-filesに保存する
 ![XVBA-Import](/images/vscode_env_vba/XVBA-Import.png)
-
-:::center
-⇓
+:::message
+Import実行時に書き画面が表示された場合は"Development"を選択
+![確認画面](/images/vscode_env_vba/Development.png)
 :::
-
 ![vba-files](/images/vscode_env_vba/XVBA-vba-files.png)
+*Import後*
 
 
 ### つまずいた所
 1. プロジェクトフォルダを作成した後、xlsmファイルのモジュールなどがVSCodeで確認できなかった。
-　リアル2時間くらい沼った....
 - 原因
-- メッセージRun 'npm i @localsmart/xvba-cli' for install xvba-cli !
-- npm installが必要であり、さらにコメントアウト箇所でエラーが発生
-```diff json
+- npm installが必要であり、一部バージョンの問題でエラーが発生
+```diff json:package.json
 {
     "name": "xvba-app",
     "version": "1.0.0",
@@ -86,8 +84,8 @@ VBAでの開発を行う際にブラウザで生成AIを利用しながら作業
 - 上記コメント部分を削除することで`npm install`が正常にできモジュールなどを取得できた。
 
 2. モジュールなどを編集後にエクスポートが出来なかった。
-- 動作環境によっては可能化もしれないが対象のExcelファイルを開いてエクスポートを実行することで解決できた。
+- 動作環境によっては可能化もしれないが対象のxlsmファイルを開いてエクスポートを実行することで解決できた。
 
-### 反省点
-1. 環境構築で生成AIを使って原因の特定を行っているがnpmなど自身の環境の状態は伝えることが出来ていなかったため、
-　原因の特定と推測を自身で行い、推測した内容をAIで確認する方が効率よく解決できると感じた。
+### まとめ
+今回、VBAのコードをGitで管理しやすくしコードの確認をAIで行いやすくするためにVSCodeに環境を構築したが、packageのインストールでつまずいたりと改めてnpmについて学習する機会にもなって良かった思いました。
+同様なところでつまずいた方の助けになればいいと思います。
