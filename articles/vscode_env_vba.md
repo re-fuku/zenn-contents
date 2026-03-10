@@ -15,23 +15,33 @@ VBAでの開発を行う際にブラウザで生成AIを利用しながら作業
 - エディタ内で開発を行えるようにしAIへコードのコピペ作業を無くしたい
 - コードの修正内容や変更状態を管理するためGitを利用したい
 
-### インストールした拡張機能
+## VSCodeの拡張機能
 1. VBA(発行元 : serkonda7)
-- 用途 : コードをハイライトし見やすくする
+用途 : コードをハイライトし見やすくする
 ![VSCode拡張機能VBA](/images/vscode_env_vba/VSCode-VBA.png)
 2. XVBA - Live Server VBA(発行元 : Local Smart)
-- 用途 : Excel⇔VSCodeの連携を行う
-- npmコマンドを使用するため事前にnode.jsのインストールが必要
+用途 : Excel⇔VSCodeの連携を行う
+:::message
+    npmコマンドを使用するため事前にnode.jsが必要
+:::
 ![VSCode拡張機能XVBA](/images/vscode_env_vba/VSCode-XVBA.png)
 
-### 初期設定
+## 初期設定
 #### VSCode
-1. フォルダをExcel VBAのプロジェクトフォルダにする
-- 設定ファイルの作成
-- 各ファイルを保存するフォルダを作成
+::::details 1. エンコードの設定(必要な人のみ)
+設定画面より以下のFiles:Auto Guess Encodingにチェックを入れる
+![Files Auto Guess Encoding](/images/vscode_env_vba/FilesAutoGuessEncoding.png)
+:::message
+VBAはShift-JISではないと日本語が文字化けしてしまうため、
+VSCodeにShift-JISで開くコードかどうか判別できるようにする
+:::
+::::
+2. フォルダをExcel VBAのプロジェクトフォルダにする
+設定ファイルの作成
+各ファイルを保存するフォルダを作成
 ![プロジェクトフォルダの作成](/images/vscode_env_vba/XVBA-BootStrap.gif)
-2. config.jsonの設定
-- どのExcelと紐づけるか設定する
+3. config.jsonの設定
+どのExcelと紐づけるか設定する
 ```json:config.json
     {
     "app_name": "XVBA",
@@ -48,22 +58,29 @@ VBAでの開発を行う際にブラウザで生成AIを利用しながら作業
     "xvba_dev_packages": {}
 }
 ```
-3. プロジェクトフォルダにて`npm install`を行いpackage.jsonから必要なパッケージをインストールする
-詳しくはつまずいた所を参照
-4. Import-VBAを行いxlsmファイルのモジュールなどのデータをvba-filesに保存する
+4. プロジェクトフォルダにて`npm install`を行い 
+package.jsonから必要なパッケージをインストールする
+5. Import-VBAの実施
+対象のファイル内に保管されているモジュールやクラスのデータを取得する。
 ![XVBA-Import](/images/vscode_env_vba/XVBA-Import.png)
 :::message
 Import実行時に書き画面が表示された場合は"Development"を選択
 ![確認画面](/images/vscode_env_vba/Development.png)
 :::
-![vba-files](/images/vscode_env_vba/XVBA-vba-files.png)
+![vba-files](/images/vscode_env_vba/XVBA-vba-files.png =200x)
 *Import後*
+6. Export All VBAの実施
+ファイルの編集の完了後、Excel内のモジュール等を更新する
+![XVBA-ExportAll](/images/vscode_env_vba/XVBA-ExportAll.png)
+:::message
+Export実行時に書き画面が表示された場合は"Development"を選択
+![確認画面](/images/vscode_env_vba/Development.png)
+:::
 
 
-### つまずいた所
-1. プロジェクトフォルダを作成した後、xlsmファイルのモジュールなどがVSCodeで確認できなかった。
-- 原因
-- npm installが必要であり、一部バージョンの問題でエラーが発生
+## つまずいた所
+::::details 1. Import-VBA
+npm installが必要であり、一部バージョンの問題でエラーが発生
 ```diff json:package.json
 {
     "name": "xvba-app",
@@ -81,11 +98,13 @@ Import実行時に書き画面が表示された場合は"Development"を選択
     }
 }
 ```
-- 上記コメント部分を削除することで`npm install`が正常にできモジュールなどを取得できた。
+不要な部分を削除することで`npm install`が正常にできモジュールなどを取得できた。
+::::
 
-2. モジュールなどを編集後にエクスポートが出来なかった。
-- 動作環境によっては可能化もしれないが対象のxlsmファイルを開いてエクスポートを実行することで解決できた。
+::::details 2. Export All VBA
+動作環境によっては可能化もしれないが対象のxlsmファイルを開いてエクスポートを実行することで解決できた。
+::::
 
-### まとめ
+## まとめ
 今回、VBAのコードをGitで管理しやすくしコードの確認をAIで行いやすくするためにVSCodeに環境を構築したが、packageのインストールでつまずいたりと改めてnpmについて学習する機会にもなって良かった思いました。
-同様なところでつまずいた方の助けになればいいと思います。
+同様なところでつまずいた方の助けになればと思います。
